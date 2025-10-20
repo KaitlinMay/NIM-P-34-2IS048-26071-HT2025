@@ -7,8 +7,8 @@ class Program
 
   static void Main(string[] args)
   {
-    Console.ForegroundColor = ConsoleColor.Blue;
-    Console.BackgroundColor = ConsoleColor.DarkGray;
+    Console.ForegroundColor = ConsoleColor.Cyan;
+    Console.BackgroundColor = ConsoleColor.Black;
     Console.Clear();
 
 
@@ -16,6 +16,8 @@ class Program
     Welcome();
     int[] gameState = [5, 5, 5];
     DrawBoard(gameState);
+    Console.WriteLine("");
+    
   }
 
   public static void Welcome()
