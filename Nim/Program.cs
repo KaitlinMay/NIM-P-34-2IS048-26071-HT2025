@@ -1,19 +1,25 @@
-﻿namespace Nim;
+﻿using System.Threading.Tasks.Dataflow;
+
+namespace Nim;
 
 class Program
 {
+
   static void Main(string[] args)
   {
+    Console.ForegroundColor = ConsoleColor.Blue;
     Console.BackgroundColor = ConsoleColor.DarkGray;
     Console.Clear();
 
-    Console.ForegroundColor = ConsoleColor.DarkBlue;
+
 
     Welcome();
+    int[] gameState = [5, 5, 5];
+    DrawBoard(gameState);
   }
 
   public static void Welcome()
-{
+  {
     Console.Clear();
     Console.WriteLine("Välkommen!");
     Console.WriteLine("");
@@ -26,11 +32,20 @@ class Program
     Console.WriteLine("");
     string? playerName = Console.ReadLine();
     Console.WriteLine("");
-    Console.WriteLine("Hej " + playerName +"!");
+    Console.WriteLine("Hej " + playerName + "!");
     Console.WriteLine("");
     Console.WriteLine("Nu kör vi");
     Console.WriteLine("");
-    
 
-}
+  }
+
+  public static void DrawBoard(int[] gameState)
+  {
+    for (int i = 0; i < gameState.Length; i++)
+    {
+      Console.WriteLine(new string('|', gameState[i]));
+
+    }
+
+  }
 }
