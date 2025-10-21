@@ -1,3 +1,3 @@
 - Add possessive logic for s to code 
 
-Next time work on player 2s turn and PlayerTurn method
+Fix error with index out of range when splitting response 

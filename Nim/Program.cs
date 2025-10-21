@@ -74,9 +74,10 @@ class Program
   {
     int[] gameStateCopy = [.. gameState];
 
+    Console.WriteLine("Ange hög och antal i följande format: \n\"<hög> <antal>\"");
+
     for (int i = 0; i < 20; i++)
     {
-      Console.WriteLine("Ange hög och antal i följande format: \n\"<hög> <antal>\"");
       string response = Console.ReadLine() ?? "";
 
       if (response.Trim() == "")
