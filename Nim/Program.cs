@@ -12,14 +12,14 @@ class Program
     Console.BackgroundColor = ConsoleColor.Black;
     Console.Clear();
 
-    int leaderBoardLength = 10; 
+    int leaderBoardLength = 10;
     string[] leaderBoardKeys = new string[leaderBoardLength];
     int[] leaderBoardValues = new int[leaderBoardLength];
     leaderBoardKeys[0] = "k";
     leaderBoardValues[0] = 112;
 
     DrawLeaderBoard(leaderBoardKeys, leaderBoardValues);
-    Environment.Exit(0);
+    // Environment.Exit(0);
 
     Welcome();
 
@@ -55,15 +55,17 @@ class Program
 
       if (!isPlayer1Turn)
       {
-        Console.WriteLine($"Grattis {player1Name}! Du vann!");
+        Console.WriteLine("");
+        Console.WriteLine($"Grattis {player1Name}! Du vann! \n");
       }
       else
       {
-        Console.WriteLine($"Grattis {player2Name}! Du vann!");
+        Console.WriteLine("");
+        Console.WriteLine($"Grattis {player2Name}! Du vann! \n");
       }
 
-      Console.WriteLine("Tack för att ni spelade! \nVill ni spela igen? [J/n]");
-      string replayResponse = (Console.ReadLine() ?? "").Trim();
+      Console.WriteLine("Tack för att ni spelade! \n \nVill ni spela igen? [J/n] \n");
+      string replayResponse = (Console.ReadLine() ?? "").Trim(); Console.WriteLine("");
       if (replayResponse == "n" || replayResponse == "nej" || replayResponse == "ne")
       {
         Console.WriteLine("Tack för att ni spelade! \nSpelet stänger...");
@@ -91,7 +93,10 @@ class Program
     Console.WriteLine("");
     Console.WriteLine("Vem ska spela? Skriv ditt namn");
     Console.WriteLine("");
+    Console.ForegroundColor = ConsoleColor.DarkGray;
     string playerName = Console.ReadLine() ?? "ERROR";
+    Console.ForegroundColor = ConsoleColor.Cyan;
+
     if (playerName.Trim() == "") playerName = "Nise"; // Cutting "Nisse" to 4 letters
 
     Console.WriteLine("");
@@ -103,12 +108,18 @@ class Program
   public static void DrawBoard(int[] gameState)
   {
     Console.Clear();
+    Console.WriteLine(" ");
+    Console.ForegroundColor = ConsoleColor.Black;
+    Console.BackgroundColor = ConsoleColor.Gray;
+    Console.WriteLine($"{" ", 9}");
     for (int i = 0; i < gameState.Length; i++)
     {
-      Console.WriteLine(new string('|', gameState[i])); Console.WriteLine(" ");
+      Console.WriteLine($"{" ", 2}{new string('|', gameState[i]),-5}{" ", 2}"); 
+      Console.WriteLine($"{" ", 9}");
 
     }
-
+    Console.ForegroundColor = ConsoleColor.Cyan;
+    Console.BackgroundColor = ConsoleColor.Black;
   }
 
   public static int[] PlayerTurn(int[] gameState)
@@ -116,7 +127,8 @@ class Program
     // Copy game state by creating another array referencing the same values in the original array so that the original game state is not changed by this method during gameplay
     int[] gameStateCopy = [.. gameState];
 
-    Console.WriteLine("Ange hög och antal i följande format: \n\"<hög> <antal>\"");
+    Console.WriteLine(" ");
+    Console.WriteLine("Ange hög och antal i följande format: \n\"<hög> <antal>\" \n");
 
     for (int i = 0; i < 20; i++)
     {
@@ -214,10 +226,10 @@ class Program
   public static void DrawLeaderBoard(string[] leaderBoardKeys, int[] leaderBoardValues)
   {
     string[,] unsortedLeaderBoard = new string[leaderBoardKeys.Length, 2];
-    for(int i = 0; i < leaderBoardKeys.Length; i++)
+    for (int i = 0; i < leaderBoardKeys.Length; i++)
     {
       unsortedLeaderBoard[i, 0] = leaderBoardKeys[i];
-      unsortedLeaderBoard[i, 1] = leaderBoardValues[i].ToString(); 
+      unsortedLeaderBoard[i, 1] = leaderBoardValues[i].ToString();
     }
     // List<string> toBeSorted = [.. unsortedLeaderBoard];
     // toBeSorted.Sort();
@@ -241,6 +253,6 @@ class Program
   }
   public static void SetPlayerScore(string[] leaderBoardKeys, int[] leaderBoardValues, string playerName)
   {
-    
+
   }
 }
