@@ -116,6 +116,11 @@ class Program
 
   }
 
+  /// <summary>
+  /// Prompts the player to give a name and validate that it is defined and unique. Names may only be four characters long. 
+  /// </summary>
+  /// <param name="reservedName"> Prevent user from using this name. </param>
+  /// <returns> A valid name </returns>
   public static string GetPlayerName(string reservedName = "")
   {
     for (int tries = 0; tries < 13; tries++)
@@ -162,6 +167,10 @@ class Program
     return "Nimm"; // Fallback name if player does not give a name
   }
 
+  /// <summary>
+  /// Renders game state.
+  /// </summary>
+  /// <param name="gameState"> Value at each index is an amount of sticks </param>
   public static void DrawBoard(int[] gameState)
   {
     Console.Clear();
@@ -181,6 +190,12 @@ class Program
     Console.BackgroundColor = ConsoleColor.Black;
   }
 
+  /// <summary>
+  /// Prompts player to make a move and update gameState.
+  /// </summary>
+  /// <param name="gameState"> Value at each index is an amount of sticks </param>
+  /// <param name="responseOverride"> When defined, bypass Console.ReadLine() and use this instead </param>
+  /// <returns> updated gameState </returns>
   public static int[] PlayerTurn(int[] gameState, string? responseOverride = null)
   {
     // Copy game state by creating another array referencing the same values in the original array so that the original game state is not changed by this method during gameplay
