@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks.Dataflow;
-
-namespace Nim;
+﻿namespace Nim;
 
 class Program
 {
@@ -12,14 +9,16 @@ class Program
     Console.BackgroundColor = ConsoleColor.Black;
     Console.Clear();
 
-    int leaderBoardLength = 10;
-    string[] leaderBoardKeys = new string[leaderBoardLength];
-    int[] leaderBoardValues = new int[leaderBoardLength];
-    leaderBoardKeys[0] = "k";
-    leaderBoardValues[0] = 112;
+    int leaderboardLength = 10;
+    string[] leaderboardKeys = new string[leaderboardLength];
+    int[] leaderboardValues = new int[leaderboardLength];
+    leaderboardKeys[0] = "k";
+    leaderboardValues[0] = 112;
+    leaderboardKeys[3] = "v";
+    leaderboardValues[3] = 17;
 
-    DrawLeaderBoard(leaderBoardKeys, leaderBoardValues);
-    // Environment.Exit(0);
+    DrawLeaderboard(leaderboardKeys, leaderboardValues);
+    Environment.Exit(0);
 
     Welcome();
 
@@ -105,6 +104,7 @@ class Program
 
     return playerName;
   }
+
   public static void DrawBoard(int[] gameState)
   {
     Console.Clear();
@@ -199,6 +199,7 @@ class Program
     Environment.Exit(0);
     return []; // Should never happen, makes code happy
   }
+
   public static bool IsGameOver(int[] gameState)
   {
     int sumOfSticks = 0;
@@ -223,36 +224,63 @@ class Program
     return true;
   }
 
-  public static void DrawLeaderBoard(string[] leaderBoardKeys, int[] leaderBoardValues)
+  public static void DrawLeaderboard(string[] leaderboardKeys, int[] leaderboardValues)
   {
-    string[,] unsortedLeaderBoard = new string[leaderBoardKeys.Length, 2];
-    for (int i = 0; i < leaderBoardKeys.Length; i++)
-    {
-      unsortedLeaderBoard[i, 0] = leaderBoardKeys[i];
-      unsortedLeaderBoard[i, 1] = leaderBoardValues[i].ToString();
-    }
-    // List<string> toBeSorted = [.. unsortedLeaderBoard];
-    // toBeSorted.Sort();
-    // string[,] leaderBoard = [.. toBeSorted];
+    (string[] sortedLeaderboardKeys, string[] sortedLeaderboardValues) = SortLeaderboard(leaderboardKeys, leaderboardValues);
 
-    Console.WriteLine(" ");
-    Console.WriteLine(" ________________________");
+    Console.WriteLine("");
+    Console.WriteLine(" ________________________ ");
     Console.WriteLine("|    Vinststatistik      |");
     Console.WriteLine("| plats | namn | vinster |");
     Console.WriteLine("|-------|------|---------|");
-    for (int i = 0; i < leaderBoardKeys.Length; i++)
+    for (int i = 0; i < sortedLeaderboardKeys.Length; i++)
     {
-      if (leaderBoardKeys[i] == null)
-      {
-        continue;
-      }
+      if (sortedLeaderboardKeys[i] == null || sortedLeaderboardKeys[i] == "") continue;
+
       // Apparently ",N" is the same as PadLeft within a template string :shrug:
-      Console.WriteLine($"| {i + 1,5} | {leaderBoardKeys[i],4} | {leaderBoardValues[i],7} |");
+      Console.WriteLine($"| {i + 1,-5} | {sortedLeaderboardKeys[i],4} | {sortedLeaderboardValues[i],7} |");
     }
-    Console.WriteLine("|_______|______|_________| \n");
+    Console.WriteLine("|_______|______|_________|\n");
   }
-  public static void SetPlayerScore(string[] leaderBoardKeys, int[] leaderBoardValues, string playerName)
+  public static void SetPlayerScore(string[] leaderboardKeys, int[] leaderboardValues, string playerName)
   {
 
+  }
+
+  public static (string[], string[]) SortLeaderboard(string[] leaderboardKeys, int[] leaderboardValues)
+  {
+    int leaderboardLength = leaderboardKeys.Length;
+
+    string[] dict = new string[leaderboardLength];
+    for (int i = 0; i < leaderboardLength; i++)
+    {
+      dict[i] = leaderboardKeys[i] + "|" + leaderboardValues[i];
+    }
+
+    // Bubble sort
+    for (int pass = 0; pass < leaderboardLength; pass++)
+    {
+      for (int i = 0; i < leaderboardLength - 1; i++)
+      {
+        int scoreA = int.Parse(dict[i].Split("|")[1]);
+        int scoreB = int.Parse(dict[i + 1].Split("|")[1]);
+        if (scoreA < scoreB)
+        {
+          // Swap A and B
+          (dict[i + 1], dict[i]) = (dict[i], dict[i + 1]);
+        }
+      }
+    }
+
+    string[] sortedKeys = new string[leaderboardLength];
+    string[] sortedValues = new string[leaderboardLength];
+    for (int i = 0; i < leaderboardLength; i++)
+    {
+      string[] nameAndScore = dict[i].Split("|");
+      sortedKeys[i] = nameAndScore[0];
+      sortedValues[i] = nameAndScore[1];
+    }
+
+    return (sortedKeys, sortedValues);
   }
 }
