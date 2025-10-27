@@ -130,7 +130,7 @@ class Program
     int[] gameStateCopy = [.. gameState];
 
     Console.WriteLine(" ");
-    Console.WriteLine("Ange hög och antal i följande format: \n\"<hög> <antal>\" \n");
+    Console.WriteLine("Ange hög och antal i följande format: \n<hög> <antal> \n");
 
     for (int i = 0; i < 20; i++)
     {
