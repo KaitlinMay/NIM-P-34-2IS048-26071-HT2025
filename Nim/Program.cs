@@ -12,10 +12,12 @@ class Program
     int leaderboardLength = 10;
     string[] leaderboardKeys = new string[leaderboardLength];
     int[] leaderboardValues = new int[leaderboardLength];
-    leaderboardKeys[0] = "k";
-    leaderboardValues[0] = 112;
-    leaderboardKeys[3] = "v";
-    leaderboardValues[3] = 17;
+    // leaderboardKeys[0] = "k";
+    // leaderboardValues[0] = 112;
+    // leaderboardKeys[3] = "v";
+    // leaderboardValues[3] = 17;
+    SetPlayerScore(leaderboardKeys, leaderboardValues, "Kate", 142);
+    SetPlayerScore(leaderboardKeys, leaderboardValues, "V" );
 
     DrawLeaderboard(leaderboardKeys, leaderboardValues);
     Environment.Exit(0);
@@ -111,11 +113,11 @@ class Program
     Console.WriteLine(" ");
     Console.ForegroundColor = ConsoleColor.Black;
     Console.BackgroundColor = ConsoleColor.Gray;
-    Console.WriteLine($"{" ", 9}");
+    Console.WriteLine($"{" ",9}");
     for (int i = 0; i < gameState.Length; i++)
     {
-      Console.WriteLine($"{" ", 2}{new string('|', gameState[i]),-5}{" ", 2}"); 
-      Console.WriteLine($"{" ", 9}");
+      Console.WriteLine($"{" ",2}{new string('|', gameState[i]),-5}{" ",2}");
+      Console.WriteLine($"{" ",9}");
 
     }
     Console.ForegroundColor = ConsoleColor.Cyan;
@@ -226,7 +228,7 @@ class Program
 
   public static void DrawLeaderboard(string[] leaderboardKeys, int[] leaderboardValues)
   {
-    (string[] sortedLeaderboardKeys, string[] sortedLeaderboardValues) = SortLeaderboard(leaderboardKeys, leaderboardValues);
+    (string[] sortedLeaderboardKeys, int[] sortedLeaderboardValues) = SortLeaderboard(leaderboardKeys, leaderboardValues);
 
     Console.WriteLine("");
     Console.WriteLine(" ________________________ ");
@@ -242,16 +244,51 @@ class Program
     }
     Console.WriteLine("|_______|______|_________|\n");
   }
-  public static void SetPlayerScore(string[] leaderboardKeys, int[] leaderboardValues, string playerName)
+  public static void SetPlayerScore(string[] leaderboardKeys, int[] leaderboardValues, string playerName, int score = 0)
   {
     // Try to find existing player by name
     // If they exist, ++ score,
     // else 
     // if leaderboard has space, append new entry
     // else replace lowest score entry
+
+    int leaderboardCount = 0;
+
+    for (int i = 0; i < leaderboardKeys.Length; i++)
+    {
+      if (leaderboardKeys[i] != null && leaderboardKeys[i] != "") leaderboardCount++; // for later use
+
+      if (leaderboardKeys[i] == playerName)
+      {
+        leaderboardValues[i] += score;
+        return;
+      }
+    }
+    if (leaderboardCount < leaderboardKeys.Length)
+    {
+      for (int i = 0; i < leaderboardKeys.Length; i++)
+      {
+        if (leaderboardKeys[i] == null || leaderboardKeys[i] == "")
+        {
+          leaderboardKeys[i] = playerName;
+          leaderboardValues[i] = score;
+          return;
+        }
+      }
+    }
+    (string[] sortedLeaderboardKeys, int[] sortedLeaderboardValues) = SortLeaderboard(leaderboardKeys, leaderboardValues);
+    sortedLeaderboardKeys[sortedLeaderboardKeys.Length - 1] = playerName;
+    sortedLeaderboardValues[sortedLeaderboardValues.Length - 1] = score;
+    for (int i = 0; i < leaderboardKeys.Length; i++)
+    {
+      leaderboardKeys[i] = sortedLeaderboardKeys[i];
+      leaderboardValues[i] = sortedLeaderboardValues[i];
+    }
+
+
   }
 
-  public static (string[], string[]) SortLeaderboard(string[] leaderboardKeys, int[] leaderboardValues)
+  public static (string[], int[]) SortLeaderboard(string[] leaderboardKeys, int[] leaderboardValues)
   {
     int leaderboardLength = leaderboardKeys.Length;
 
@@ -277,12 +314,12 @@ class Program
     }
 
     string[] sortedKeys = new string[leaderboardLength];
-    string[] sortedValues = new string[leaderboardLength];
+    int[] sortedValues = new int[leaderboardLength];
     for (int i = 0; i < leaderboardLength; i++)
     {
       string[] nameAndScore = dict[i].Split("|");
       sortedKeys[i] = nameAndScore[0];
-      sortedValues[i] = nameAndScore[1];
+      sortedValues[i] = int.Parse(nameAndScore[1]);
     }
 
     return (sortedKeys, sortedValues);
