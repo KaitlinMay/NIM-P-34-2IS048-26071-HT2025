@@ -28,7 +28,7 @@ class Program
       string player2Name = GetPlayerName(player1Name);
       Console.WriteLine(" ");
       Console.WriteLine("NU KÖR VI \n");
-      Thread.Sleep(3000);
+      Thread.Sleep(1500);
 
       int[] gameState = [5, 5, 5];
       bool isPlayer1Turn = true;
@@ -37,6 +37,7 @@ class Program
       {
         DrawBoard(gameState);
         Console.WriteLine("");
+        Thread.Sleep(500);
 
         if (isPlayer1Turn)
         {
@@ -45,7 +46,11 @@ class Program
           {
             Console.WriteLine("AI tänker ...");
             Thread.Sleep(2000);
-            gameState = PlayerTurn(gameState, AIPlayer(gameState));
+            string aiPlay = AIPlayer(gameState);
+            gameState = PlayerTurn(gameState, aiPlay);
+            DrawBoard(gameState);
+            Console.WriteLine($"AI spelade <{aiPlay}>");
+            Thread.Sleep(2000);
           }
           else gameState = PlayerTurn(gameState);
         }
@@ -56,7 +61,11 @@ class Program
           {
             Console.WriteLine("AI tänker ...");
             Thread.Sleep(1999); // This AI is a faster thinker  
-            gameState = PlayerTurn(gameState, AIPlayer(gameState));
+            string aiPlay = AIPlayer(gameState);
+            gameState = PlayerTurn(gameState, aiPlay);
+            DrawBoard(gameState);
+            Console.WriteLine($"AI spelade <{aiPlay}>");
+            Thread.Sleep(2000);
           }
           else gameState = PlayerTurn(gameState);
         }
@@ -91,6 +100,9 @@ class Program
     }
   }
 
+  /// <summary>
+  /// Welcomes players and displays the rules of the game.  
+  /// </summary>
   public static void Welcome()
   {
     Console.Clear();
