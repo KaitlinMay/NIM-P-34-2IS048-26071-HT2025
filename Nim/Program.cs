@@ -12,8 +12,12 @@ class Program
     Console.BackgroundColor = ConsoleColor.Black;
     Console.Clear();
 
-    string[] leaderBoardKeys = ["k"];
-    int[] leaderBoardValues = [112];
+    int leaderBoardLength = 10; 
+    string[] leaderBoardKeys = new string[leaderBoardLength];
+    int[] leaderBoardValues = new int[leaderBoardLength];
+    leaderBoardKeys[0] = "k";
+    leaderBoardValues[0] = 112;
+
     DrawLeaderBoard(leaderBoardKeys, leaderBoardValues);
     Environment.Exit(0);
 
@@ -88,9 +92,12 @@ class Program
     Console.WriteLine("Vem ska spela? Skriv ditt namn");
     Console.WriteLine("");
     string playerName = Console.ReadLine() ?? "ERROR";
+    if (playerName.Trim() == "") playerName = "Nise"; // Cutting "Nisse" to 4 letters
+
     Console.WriteLine("");
     Console.WriteLine("Hej " + playerName + "!");
     Console.WriteLine("");
+
     return playerName;
   }
   public static void DrawBoard(int[] gameState)
@@ -206,13 +213,34 @@ class Program
 
   public static void DrawLeaderBoard(string[] leaderBoardKeys, int[] leaderBoardValues)
   {
+    string[,] unsortedLeaderBoard = new string[leaderBoardKeys.Length, 2];
+    for(int i = 0; i < leaderBoardKeys.Length; i++)
+    {
+      unsortedLeaderBoard[i, 0] = leaderBoardKeys[i];
+      unsortedLeaderBoard[i, 1] = leaderBoardValues[i].ToString(); 
+    }
+    // List<string> toBeSorted = [.. unsortedLeaderBoard];
+    // toBeSorted.Sort();
+    // string[,] leaderBoard = [.. toBeSorted];
+
+    Console.WriteLine(" ");
+    Console.WriteLine(" ________________________");
     Console.WriteLine("|    Vinststatistik      |");
     Console.WriteLine("| plats | namn | vinster |");
     Console.WriteLine("|-------|------|---------|");
     for (int i = 0; i < leaderBoardKeys.Length; i++)
     {
+      if (leaderBoardKeys[i] == null)
+      {
+        continue;
+      }
       // Apparently ",N" is the same as PadLeft within a template string :shrug:
       Console.WriteLine($"| {i + 1,5} | {leaderBoardKeys[i],4} | {leaderBoardValues[i],7} |");
     }
+    Console.WriteLine("|_______|______|_________| \n");
+  }
+  public static void SetPlayerScore(string[] leaderBoardKeys, int[] leaderBoardValues, string playerName)
+  {
+    
   }
 }

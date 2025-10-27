@@ -3,3 +3,7 @@
 - Add a toggle for who wins, the last picker
 - Color Console.ReadLine differently than Console.WriteLine
 - Allow cancelling/conceding during a player turn
+- GetPlayerName: 
+  - Give player random names if they do not give their own
+  - Make it that players in the same game must have different names
+  - Limit names to 4 characters
