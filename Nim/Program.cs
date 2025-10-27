@@ -1,4 +1,11 @@
-﻿namespace Nim;
+﻿/* 
+Kaitlin May
+Vena Ström
+2025-10-27
+VS Code 1.105.1
+ */
+
+namespace Nim;
 
 class Program
 {
@@ -11,22 +18,14 @@ class Program
     int leaderboardLength = 10;
     string[] leaderboardKeys = new string[leaderboardLength];
     int[] leaderboardValues = new int[leaderboardLength];
-    // leaderboardKeys[0] = "k";
-    // leaderboardValues[0] = 112;
-    // leaderboardKeys[3] = "v";
-    // leaderboardValues[3] = 17;
-    SetPlayerScore(leaderboardKeys, leaderboardValues, "Kate", 142);
-    SetPlayerScore(leaderboardKeys, leaderboardValues, "V");
-
-    DrawLeaderboard(leaderboardKeys, leaderboardValues);
 
     Welcome();
 
     while (true)
     {
-      Console.Clear();
+      // Console.Clear();
       string player1Name = GetPlayerName();
-      string player2Name = GetPlayerName();
+      string player2Name = GetPlayerName(player1Name);
       Console.WriteLine(" ");
       Console.WriteLine("NU KÖR VI \n");
       Thread.Sleep(1000);
@@ -52,16 +51,22 @@ class Program
         isPlayer1Turn = !isPlayer1Turn;
       }
 
+      Console.WriteLine("");
       if (!isPlayer1Turn)
       {
-        Console.WriteLine("");
         Console.WriteLine($"Grattis {player1Name}! Du vann! \n");
+        SetPlayerScore(leaderboardKeys, leaderboardValues, player1Name, 1);
+        SetPlayerScore(leaderboardKeys, leaderboardValues, player2Name, 0);
       }
       else
       {
-        Console.WriteLine("");
         Console.WriteLine($"Grattis {player2Name}! Du vann! \n");
+        SetPlayerScore(leaderboardKeys, leaderboardValues, player2Name, 1);
+        SetPlayerScore(leaderboardKeys, leaderboardValues, player1Name, 0);
       }
+
+      DrawScoreboard(leaderboardKeys, leaderboardValues);
+      Console.WriteLine("");
 
       Console.WriteLine("Tack för att ni spelade! \n \nVill ni spela igen? [J/n] \n");
       string replayResponse = (Console.ReadLine() ?? "").Trim(); Console.WriteLine("");
@@ -87,22 +92,50 @@ class Program
 
   }
 
-  public static string GetPlayerName()
+  public static string GetPlayerName(string reservedName = "")
   {
-    Console.WriteLine("");
-    Console.WriteLine("Vem ska spela? Skriv ditt namn");
-    Console.WriteLine("");
-    Console.ForegroundColor = ConsoleColor.DarkGray;
-    string playerName = Console.ReadLine() ?? "ERROR";
-    Console.ForegroundColor = ConsoleColor.Cyan;
+    for (int tries = 0; tries < 13; tries++)
+    {
+      Console.WriteLine("");
+      Console.WriteLine("Vem ska spela? Skriv ditt namn eller \"AI\" för att skapa en AI-spelare");
+      Console.WriteLine("");
+      Console.ForegroundColor = ConsoleColor.DarkGray;
+      string playerName = Console.ReadLine() ?? "ERROR";
+      Console.ForegroundColor = ConsoleColor.Cyan;
 
-    if (playerName.Trim() == "") playerName = "Nise"; // Cutting "Nisse" to 4 letters
+      if (playerName.Trim() == "")
+      {
+        Console.WriteLine("Du behöver ange ett namn! \nFörsök igen!");
+        continue;
+      }
 
-    Console.WriteLine("");
-    Console.WriteLine("Hej " + playerName + "!");
-    Console.WriteLine("");
+      if (playerName.Length > 4)
+      {
+        Console.WriteLine("Välj ett namn med mest fyra bokstaver \nFörsök igen!");
+        continue;
+      }
 
-    return playerName;
+      if (playerName == reservedName|| playerName == "AI:]" || playerName == "AI:[")
+      {
+        Console.WriteLine("Namnet är upptaget \nFörsök igen!");
+        continue;
+      }
+
+      if (playerName.Trim().ToLower() == "ai")
+      {
+        if (reservedName == "AI:]") playerName = "AI:[";
+        else playerName = "AI:]";
+        Console.WriteLine("Du har skapat en AI-spelare!");
+        Thread.Sleep(400);
+      }
+
+      Console.WriteLine("");
+      Console.WriteLine("Hej " + playerName + "!");
+      Console.WriteLine("");
+
+      return playerName;
+    }
+    return "Nimm"; // Fallback name if player does not give a name
   }
 
   public static void DrawBoard(int[] gameState)
@@ -226,7 +259,7 @@ class Program
     return true;
   }
 
-  public static void DrawLeaderboard(string[] leaderboardKeys, int[] leaderboardValues)
+  public static void DrawScoreboard(string[] leaderboardKeys, int[] leaderboardValues)
   {
     (string[] sortedLeaderboardKeys, int[] sortedLeaderboardValues) = SortLeaderboard(leaderboardKeys, leaderboardValues);
 
@@ -323,5 +356,13 @@ class Program
     }
 
     return (sortedKeys, sortedValues);
+  }
+  public static string AIPlayer(int[] gameState)
+  {
+    Random random = new();
+    int pileIndex = random.Next(0, gameState.Length);
+    int pileCount = gameState[pileIndex];
+    int pick = random.Next(1, pileCount);
+    return $"{pileIndex + 1} {pick}";
   }
 }
