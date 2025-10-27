@@ -28,7 +28,7 @@ class Program
       string player2Name = GetPlayerName(player1Name);
       Console.WriteLine(" ");
       Console.WriteLine("NU KÖR VI \n");
-      Thread.Sleep(1000);
+      Thread.Sleep(3000);
 
       int[] gameState = [5, 5, 5];
       bool isPlayer1Turn = true;
@@ -41,12 +41,24 @@ class Program
         if (isPlayer1Turn)
         {
           Console.WriteLine($"Nu är det {player1Name}s tur");
-          gameState = PlayerTurn(gameState);
+          if (player1Name == "AI:]" || player1Name == "AI:[")
+          {
+            Console.WriteLine("AI tänker ...");
+            Thread.Sleep(2000);
+            gameState = PlayerTurn(gameState, AIPlayer(gameState));
+          }
+          else gameState = PlayerTurn(gameState);
         }
         else
         {
           Console.WriteLine($"Nu är det {player2Name}s tur");
-          gameState = PlayerTurn(gameState);
+          if (player2Name == "AI:]" || player2Name == "AI:[")
+          {
+            Console.WriteLine("AI tänker ...");
+            Thread.Sleep(1999); // This AI is a faster thinker  
+            gameState = PlayerTurn(gameState, AIPlayer(gameState));
+          }
+          else gameState = PlayerTurn(gameState);
         }
         isPlayer1Turn = !isPlayer1Turn;
       }
@@ -115,7 +127,7 @@ class Program
         continue;
       }
 
-      if (playerName == reservedName|| playerName == "AI:]" || playerName == "AI:[")
+      if (playerName == reservedName || playerName == "AI:]" || playerName == "AI:[")
       {
         Console.WriteLine("Namnet är upptaget \nFörsök igen!");
         continue;
@@ -126,7 +138,7 @@ class Program
         if (reservedName == "AI:]") playerName = "AI:[";
         else playerName = "AI:]";
         Console.WriteLine("Du har skapat en AI-spelare!");
-        Thread.Sleep(400);
+        Thread.Sleep(1000);
       }
 
       Console.WriteLine("");
@@ -157,7 +169,7 @@ class Program
     Console.BackgroundColor = ConsoleColor.Black;
   }
 
-  public static int[] PlayerTurn(int[] gameState)
+  public static int[] PlayerTurn(int[] gameState, string? responseOverride = null)
   {
     // Copy game state by creating another array referencing the same values in the original array so that the original game state is not changed by this method during gameplay
     int[] gameStateCopy = [.. gameState];
@@ -167,7 +179,9 @@ class Program
 
     for (int i = 0; i < 20; i++)
     {
-      string response = Console.ReadLine() ?? "";
+      string response;
+      if (responseOverride != null) response = responseOverride;
+      else response = Console.ReadLine() ?? "";
 
       if (response.Trim() == "")
       {
@@ -360,9 +374,19 @@ class Program
   public static string AIPlayer(int[] gameState)
   {
     Random random = new();
-    int pileIndex = random.Next(0, gameState.Length);
-    int pileCount = gameState[pileIndex];
-    int pick = random.Next(1, pileCount);
-    return $"{pileIndex + 1} {pick}";
+    for (int i = 0; i < 100; i++)
+    {
+      int pileIndex = random.Next(0, gameState.Length);
+      int pileCount = gameState[pileIndex];
+      if (pileCount <= 0)
+      {
+        continue;
+      }
+      int pick = random.Next(1, pileCount);
+      return $"{pileIndex + 1} {pick}";
+    }
+    Console.WriteLine("AI gick sönder :O \nAvslutar programmet...");
+    Environment.Exit(0);
+    return "";
   }
 }
