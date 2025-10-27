@@ -13,44 +13,55 @@ class Program
     Console.Clear();
 
 
-
     Welcome();
-    string player1Name = GetPlayerName();
-    string player2Name = GetPlayerName();
-    Console.WriteLine(" ");
-    Console.WriteLine("NU KÖR VI \n");
-    Thread.Sleep(1000);
-
-    int[] gameState = [5, 5, 5];
-    bool isPlayer1Turn = true;
-
-    while (!IsGameOver(gameState))
+    while (true)
     {
-      DrawBoard(gameState);
-      Console.WriteLine("");
+      Console.Clear();
+      string player1Name = GetPlayerName();
+      string player2Name = GetPlayerName();
+      Console.WriteLine(" ");
+      Console.WriteLine("NU KÖR VI \n");
+      Thread.Sleep(1000);
 
-      if (isPlayer1Turn)
+      int[] gameState = [5, 5, 5];
+      bool isPlayer1Turn = true;
+
+      while (!IsGameOver(gameState))
       {
-        Console.WriteLine($"Nu är det {player1Name}s tur");
-        gameState = PlayerTurn(gameState);
+        DrawBoard(gameState);
+        Console.WriteLine("");
+
+        if (isPlayer1Turn)
+        {
+          Console.WriteLine($"Nu är det {player1Name}s tur");
+          gameState = PlayerTurn(gameState);
+        }
+        else
+        {
+          Console.WriteLine($"Nu är det {player2Name}s tur");
+          gameState = PlayerTurn(gameState);
+        }
+        isPlayer1Turn = !isPlayer1Turn;
+      }
+
+      if (!isPlayer1Turn)
+      {
+        Console.WriteLine($"Grattis {player1Name}! Du vann!");
       }
       else
       {
-        Console.WriteLine($"Nu är det {player2Name}s tur");
-        gameState = PlayerTurn(gameState);
+        Console.WriteLine($"Grattis {player2Name}! Du vann!");
       }
-      isPlayer1Turn = !isPlayer1Turn;
-    }
 
-    if (!isPlayer1Turn)
-    {
-      Console.WriteLine($"Grattis {player1Name}! Du vann!");
+      Console.WriteLine("Tack för att ni spelade! \nVill ni spela igen? [J/n]");
+      string replayResponse = (Console.ReadLine() ?? "").Trim();
+      if (replayResponse == "n" || replayResponse == "nej" || replayResponse == "ne")
+      {
+        Console.WriteLine("Tack för att ni spelade! \nSpelet stänger...");
+        break;
+      }
+
     }
-    else
-    {
-      Console.WriteLine($"Grattis {player2Name}! Du vann!");
-    }
-    
   }
 
   public static void Welcome()
@@ -79,9 +90,10 @@ class Program
   }
   public static void DrawBoard(int[] gameState)
   {
+    Console.Clear();
     for (int i = 0; i < gameState.Length; i++)
     {
-      Console.WriteLine(new string('|', gameState[i]));
+      Console.WriteLine(new string('|', gameState[i])); Console.WriteLine(" ");
 
     }
 

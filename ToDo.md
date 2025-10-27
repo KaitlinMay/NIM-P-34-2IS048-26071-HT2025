@@ -1,4 +1,5 @@
 - Add possessive logic for s to code 
 - Collapse whitespace in user input 
 - Add a toggle for who wins, the last picker
-
+- Color Console.ReadLine differently than Console.WriteLine
+- Allow cancelling/conceding during a player turn
