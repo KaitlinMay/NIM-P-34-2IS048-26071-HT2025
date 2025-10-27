@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks.Dataflow;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks.Dataflow;
 
 namespace Nim;
 
@@ -17,8 +18,11 @@ class Program
     string player1Name = GetPlayerName();
     string player2Name = GetPlayerName();
     Console.WriteLine(" ");
-    Console.WriteLine("NU KÖR VI");
+    Console.WriteLine("NU KÖR VI \n");
+    Thread.Sleep(500);
+
     int[] gameState = [5, 5, 5];
+
     DrawBoard(gameState);
     Console.WriteLine("");
 
@@ -146,4 +150,28 @@ class Program
     Environment.Exit(0);
     return []; // Should never happen, makes code happy
   }
+  public static bool IsGameOver(int[] gameState)
+  {
+    int sumOfSticks = 0;
+    for (int i = 0; i < gameState.Length; i++) sumOfSticks += gameState[i];
+
+    // If any pile is less than the sum of all piles then there must be sticks remaining in multiple piles, which means that the game continues
+    for (int i = 0; i < gameState.Length; i++)
+    {
+      if (gameState[i] < sumOfSticks)
+      {
+        return false;
+      }
+    }
+
+    // At this point, sumOfSticks is the stick count in the single remaining pile, which means that the game continues if there is more than one
+    if (sumOfSticks > 1)
+    {
+      return false;
+    }
+
+    // By this point the single remaining pile has one or fewer sticks remaining, which means the game is over
+    return true;
+  }
+
 }
