@@ -2,7 +2,6 @@
 
 class Program
 {
-
   static void Main(string[] args)
   {
     Console.ForegroundColor = ConsoleColor.Cyan;
@@ -17,10 +16,9 @@ class Program
     // leaderboardKeys[3] = "v";
     // leaderboardValues[3] = 17;
     SetPlayerScore(leaderboardKeys, leaderboardValues, "Kate", 142);
-    SetPlayerScore(leaderboardKeys, leaderboardValues, "V" );
+    SetPlayerScore(leaderboardKeys, leaderboardValues, "V");
 
     DrawLeaderboard(leaderboardKeys, leaderboardValues);
-    Environment.Exit(0);
 
     Welcome();
 
@@ -110,9 +108,10 @@ class Program
   public static void DrawBoard(int[] gameState)
   {
     Console.Clear();
-    Console.WriteLine(" ");
+    Console.WriteLine("");
     Console.ForegroundColor = ConsoleColor.Black;
     Console.BackgroundColor = ConsoleColor.Gray;
+    Console.Write("\x1b[1m"); // Bold
     Console.WriteLine($"{" ",9}");
     for (int i = 0; i < gameState.Length; i++)
     {
@@ -120,6 +119,7 @@ class Program
       Console.WriteLine($"{" ",9}");
 
     }
+    Console.Write("\x1b[22m"); // Un-bold
     Console.ForegroundColor = ConsoleColor.Cyan;
     Console.BackgroundColor = ConsoleColor.Black;
   }
