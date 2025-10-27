@@ -244,7 +244,11 @@ class Program
   }
   public static void SetPlayerScore(string[] leaderboardKeys, int[] leaderboardValues, string playerName)
   {
-
+    // Try to find existing player by name
+    // If they exist, ++ score,
+    // else 
+    // if leaderboard has space, append new entry
+    // else replace lowest score entry
   }
 
   public static (string[], string[]) SortLeaderboard(string[] leaderboardKeys, int[] leaderboardValues)
