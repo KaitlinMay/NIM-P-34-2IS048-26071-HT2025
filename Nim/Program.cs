@@ -19,25 +19,38 @@ class Program
     string player2Name = GetPlayerName();
     Console.WriteLine(" ");
     Console.WriteLine("NU KÖR VI \n");
-    Thread.Sleep(500);
+    Thread.Sleep(1000);
 
     int[] gameState = [5, 5, 5];
-
-    DrawBoard(gameState);
-    Console.WriteLine("");
-
     bool isPlayer1Turn = true;
-    if (isPlayer1Turn)
+
+    while (!IsGameOver(gameState))
     {
-      Console.WriteLine($"Nu är det {player1Name}s tur");
-      gameState = PlayerTurn(gameState);
+      DrawBoard(gameState);
+      Console.WriteLine("");
+
+      if (isPlayer1Turn)
+      {
+        Console.WriteLine($"Nu är det {player1Name}s tur");
+        gameState = PlayerTurn(gameState);
+      }
+      else
+      {
+        Console.WriteLine($"Nu är det {player2Name}s tur");
+        gameState = PlayerTurn(gameState);
+      }
+      isPlayer1Turn = !isPlayer1Turn;
+    }
+
+    if (!isPlayer1Turn)
+    {
+      Console.WriteLine($"Grattis {player1Name}! Du vann!");
     }
     else
     {
-      Console.WriteLine($"Nu är det {player2Name}s tur");
-      gameState = PlayerTurn(gameState);
+      Console.WriteLine($"Grattis {player2Name}! Du vann!");
     }
-
+    
   }
 
   public static void Welcome()
