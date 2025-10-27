@@ -12,8 +12,13 @@ class Program
     Console.BackgroundColor = ConsoleColor.Black;
     Console.Clear();
 
+    string[] leaderBoardKeys = ["k"];
+    int[] leaderBoardValues = [112];
+    DrawLeaderBoard(leaderBoardKeys, leaderBoardValues);
+    Environment.Exit(0);
 
     Welcome();
+
     while (true)
     {
       Console.Clear();
@@ -199,4 +204,15 @@ class Program
     return true;
   }
 
+  public static void DrawLeaderBoard(string[] leaderBoardKeys, int[] leaderBoardValues)
+  {
+    Console.WriteLine("|    Vinststatistik      |");
+    Console.WriteLine("| plats | namn | vinster |");
+    Console.WriteLine("|-------|------|---------|");
+    for (int i = 0; i < leaderBoardKeys.Length; i++)
+    {
+      // Apparently ",N" is the same as PadLeft within a template string :shrug:
+      Console.WriteLine($"| {i + 1,5} | {leaderBoardKeys[i],4} | {leaderBoardValues[i],7} |");
+    }
+  }
 }
