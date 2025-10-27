@@ -72,6 +72,7 @@ class Program
 
   public static int[] PlayerTurn(int[] gameState)
   {
+    // Copy game state by creating another array referencing the same values in the original array so that the original game state is not changed by this method during gameplay
     int[] gameStateCopy = [.. gameState];
 
     Console.WriteLine("Ange hög och antal i följande format: \n\"<hög> <antal>\"");
@@ -86,12 +87,19 @@ class Program
         Thread.Sleep(500);
         continue;
       }
-      string[] splitResponse = response.Split(' ');
-      string? pileResponse = splitResponse[0];
-      string? countResponse = splitResponse[1];
-      if (pileResponse == null || countResponse == null)
+      string[] splitResponse = response.Trim().Split(' ');
+      if (splitResponse.Length < 2)
       {
-        Console.WriteLine("Försök igen!");
+        Console.WriteLine("Du angav inte två siffror \nFörsök igen!");
+        Thread.Sleep(500);
+        continue;
+      }
+      string pileResponse = splitResponse[0];
+      string countResponse = splitResponse[1];
+
+      if (!int.TryParse(pileResponse, out int pile) || !int.TryParse(countResponse, out int count))
+      {
+        Console.WriteLine("Du angav inte två siffror \nFörsök igen!");
         Thread.Sleep(500);
         continue;
       }
@@ -99,12 +107,6 @@ class Program
       {
         Console.WriteLine("Du har inte följt instruktionerna, jag kommer ignorera allt förutom de två första siffrorna.");
         Thread.Sleep(500);
-      }
-      if (!int.TryParse(pileResponse, out int pile) || !int.TryParse(countResponse, out int count))
-      {
-        Console.WriteLine("Du angav inte två siffror \nFörsök igen!");
-        Thread.Sleep(500);
-        continue;
       }
       int pileIndex = pile - 1;
       if (pileIndex < 0 || pileIndex > gameStateCopy.Length - 1)

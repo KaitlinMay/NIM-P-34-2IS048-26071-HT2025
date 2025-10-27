@@ -1,3 +1,3 @@
 - Add possessive logic for s to code 
+- Collapse whitespace in user input 
 
-Fix error with index out of range when splitting response 
