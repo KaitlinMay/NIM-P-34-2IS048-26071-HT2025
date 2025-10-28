@@ -309,10 +309,10 @@ class Program
   }
 
   /// <summary>
-  /// 
+  /// Checks how many sticks are in each pile against the sum of sticks in all piles. 
   /// </summary>
-  /// <param name="gameState"></param>
-  /// <returns></returns>
+  /// <param name="gameState"> Value at each index is an amount of sticks </param>
+  /// <returns> IsGameOver is true or false </returns>
   public static bool IsGameOver(int[] gameState)
   {
     int sumOfSticks = 0;
@@ -338,10 +338,10 @@ class Program
   }
 
   /// <summary>
-  /// 
+  /// Renders scoreboard with player names (keys) and corresponding game win values.
   /// </summary>
-  /// <param name="leaderboardKeys"></param>
-  /// <param name="leaderboardValues"></param>
+  /// <param name="leaderboardKeys"> Player names used in the game </param>
+  /// <param name="leaderboardValues"> Amount of wins attributed to each name in leaderboardKeys </param>
   public static void DrawScoreboard(string[] leaderboardKeys, int[] leaderboardValues)
   {
     (string[] sortedLeaderboardKeys, int[] sortedLeaderboardValues) = SortLeaderboard(leaderboardKeys, leaderboardValues);
@@ -363,12 +363,12 @@ class Program
     Console.ForegroundColor = ConsoleColor.Cyan;
   }
   /// <summary>
-  /// 
+  /// Assigns scores (leaderboardValues) to players (leaderboardKeys) from each round of the game. 
   /// </summary>
-  /// <param name="leaderboardKeys"></param>
-  /// <param name="leaderboardValues"></param>
-  /// <param name="playerName"></param>
-  /// <param name="score"></param>
+  /// <param name="leaderboardKeys"> Player names used in the game </param>
+  /// <param name="leaderboardValues"> Amount of wins attributed to each name in leaderboardKeys </param>
+  /// <param name="playerName"> Player name provided by user input in active game round </param>
+  /// <param name="score">Value (1) added to scoreboard when playerName wins the game</param>
   public static void SetPlayerScore(string[] leaderboardKeys, int[] leaderboardValues, string playerName, int score = 0)
   {
     // Try to find existing player by name
@@ -414,11 +414,11 @@ class Program
   }
 
   /// <summary>
-  /// 
+  /// Sorts the names in leaderboardKeys according to highest leaderboardValues and order names are added to the game.
   /// </summary>
-  /// <param name="leaderboardKeys"></param>
-  /// <param name="leaderboardValues"></param>
-  /// <returns></returns>
+  /// <param name="leaderboardKeys"> Player names used in the game </param>
+  /// <param name="leaderboardValues"> Amount of wins attributed to each name in leaderboardKeys </param>
+  /// <returns> Numerically sorted name and point values </returns>
   public static (string[], int[]) SortLeaderboard(string[] leaderboardKeys, int[] leaderboardValues)
   {
     int leaderboardLength = leaderboardKeys.Length;
@@ -457,10 +457,10 @@ class Program
   }
 
   /// <summary>
-  /// 
+  /// Creates an AI player that randomly chooses values according to game conditions. 
   /// </summary>
-  /// <param name="gameState"></param>
-  /// <returns></returns>
+  /// <param name="gameState"> Value at each index is an amount of sticks </param>
+  /// <returns> AI player random actions</returns>
   public static string AIPlayer(int[] gameState)
   {
     Random random = new();
