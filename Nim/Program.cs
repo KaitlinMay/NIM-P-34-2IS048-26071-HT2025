@@ -36,52 +36,54 @@ class Program
       while (!IsGameOver(gameState))
       {
         DrawBoard(gameState);
-        Console.WriteLine("");
         Thread.Sleep(500);
 
         if (isPlayer1Turn)
         {
-          Console.WriteLine($"Nu är det {player1Name}s tur");
+          Console.WriteLine($"Nu är det {player1Name}s tur \n");
           if (player1Name == "AI:]" || player1Name == "AI:[")
           {
-            Console.WriteLine("AI tänker ...");
+            Console.WriteLine("AI tänker ...\n");
             Thread.Sleep(2000);
             string aiPlay = AIPlayer(gameState);
             gameState = PlayerTurn(gameState, aiPlay);
             DrawBoard(gameState);
-            Console.WriteLine($"AI spelade <{aiPlay}>");
+            Console.WriteLine($"AI spelade <{aiPlay}>\n");
             Thread.Sleep(2000);
           }
-          else gameState = PlayerTurn(gameState);
+          else gameState = PlayerTurn(gameState); DrawBoard(gameState);
         }
         else
         {
-          Console.WriteLine($"Nu är det {player2Name}s tur");
+          Console.WriteLine($"Nu är det {player2Name}s tur \n");
           if (player2Name == "AI:]" || player2Name == "AI:[")
           {
-            Console.WriteLine("AI tänker ...");
+            Console.WriteLine("AI tänker ...\n");
             Thread.Sleep(1999); // This AI is a faster thinker  
             string aiPlay = AIPlayer(gameState);
             gameState = PlayerTurn(gameState, aiPlay);
             DrawBoard(gameState);
-            Console.WriteLine($"AI spelade <{aiPlay}>");
+            Console.WriteLine($"AI spelade <{aiPlay}>\n");
             Thread.Sleep(2000);
           }
-          else gameState = PlayerTurn(gameState);
+          else gameState = PlayerTurn(gameState); DrawBoard(gameState);
         }
         isPlayer1Turn = !isPlayer1Turn;
       }
 
-      Console.WriteLine("");
       if (!isPlayer1Turn)
       {
-        Console.WriteLine($"Grattis {player1Name}! Du vann! \n");
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"Grattis {player1Name}! Du vann!");
+        Console.ForegroundColor = ConsoleColor.Cyan;
         SetPlayerScore(leaderboardKeys, leaderboardValues, player1Name, 1);
         SetPlayerScore(leaderboardKeys, leaderboardValues, player2Name, 0);
       }
       else
       {
-        Console.WriteLine($"Grattis {player2Name}! Du vann! \n");
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"Grattis {player2Name}! Du vann!");
+        Console.ForegroundColor = ConsoleColor.Cyan;
         SetPlayerScore(leaderboardKeys, leaderboardValues, player2Name, 1);
         SetPlayerScore(leaderboardKeys, leaderboardValues, player1Name, 0);
       }
@@ -90,7 +92,9 @@ class Program
       Console.WriteLine("");
 
       Console.WriteLine("Tack för att ni spelade! \n \nVill ni spela igen? [J/n] \n");
-      string replayResponse = (Console.ReadLine() ?? "").Trim(); Console.WriteLine("");
+      Console.ForegroundColor = ConsoleColor.DarkGray;
+      string replayResponse = (Console.ReadLine() ?? "").Trim(); 
+      Console.ForegroundColor = ConsoleColor.Cyan;
       if (replayResponse == "n" || replayResponse == "nej" || replayResponse == "ne")
       {
         Console.WriteLine("Tack för att ni spelade! \nSpelet stänger...");
@@ -106,13 +110,12 @@ class Program
   public static void Welcome()
   {
     Console.Clear();
-    Console.WriteLine("Välkommen!");
-    Console.WriteLine("");
-    Console.WriteLine("Vi kommer spela NIM tillsammans");
-    Console.WriteLine("");
-    Console.WriteLine("Spelreglarna är: ");
+    Console.WriteLine("Välkommen!\n");
+    Console.WriteLine("Vi kommer spela NIM tillsammans\n");
+    Console.ForegroundColor = ConsoleColor.Gray;
+    Console.WriteLine("Spelreglarna är: \n");
     Console.WriteLine("Spelet börjar med att man placerar fem stickor i tre olika högar.\r\nDärefter turas spelarna om att plocka stickor från dem tills de är tomma.\r\nDen spelare som har plockat den sista stickan har vunnit spelet.");
-    Console.WriteLine("");
+    Console.ForegroundColor = ConsoleColor.Cyan;
 
   }
 
@@ -126,7 +129,7 @@ class Program
     for (int tries = 0; tries < 13; tries++)
     {
       Console.WriteLine("");
-      Console.WriteLine("Vem ska spela? Skriv ditt namn eller \"AI\" för att skapa en AI-spelare");
+      Console.WriteLine("Vem ska spela?\n\nSkriv ditt namn eller \"AI\" för att skapa en AI-spelare");
       Console.WriteLine("");
       Console.ForegroundColor = ConsoleColor.DarkGray;
       string playerName = Console.ReadLine() ?? "ERROR";
@@ -134,19 +137,27 @@ class Program
 
       if (playerName.Trim() == "")
       {
-        Console.WriteLine("Du behöver ange ett namn! \nFörsök igen!");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Du behöver ange ett namn!\n\nFörsök igen!");
+        Console.ForegroundColor = ConsoleColor.Cyan;
         continue;
       }
 
       if (playerName.Length > 4)
       {
-        Console.WriteLine("Välj ett namn med mest fyra bokstaver \nFörsök igen!");
+        Console.WriteLine("");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Välj ett namn med mest fyra bokstaver\n\nFörsök igen!");
+        Console.ForegroundColor = ConsoleColor.Cyan;
         continue;
       }
 
       if (playerName == reservedName || playerName == "AI:]" || playerName == "AI:[")
       {
-        Console.WriteLine("Namnet är upptaget \nFörsök igen!");
+        Console.WriteLine("");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Namnet är upptaget\n\nFörsök igen!");
+        Console.ForegroundColor = ConsoleColor.Cyan;
         continue;
       }
 
@@ -154,13 +165,12 @@ class Program
       {
         if (reservedName == "AI:]") playerName = "AI:[";
         else playerName = "AI:]";
+        Console.WriteLine("");
         Console.WriteLine("Du har skapat en AI-spelare!");
         Thread.Sleep(1000);
       }
-
       Console.WriteLine("");
       Console.WriteLine("Hej " + playerName + "!");
-      Console.WriteLine("");
 
       return playerName;
     }
@@ -177,7 +187,7 @@ class Program
     Console.WriteLine("");
     Console.ForegroundColor = ConsoleColor.Black;
     Console.BackgroundColor = ConsoleColor.Gray;
-    Console.Write("\x1b[1m"); // Bold
+    Console.Write("\x1b[1m"); // Make the sticks bold
     Console.WriteLine($"{" ",9}");
     for (int i = 0; i < gameState.Length; i++)
     {
@@ -186,6 +196,7 @@ class Program
 
     }
     Console.Write("\x1b[22m"); // Un-bold
+    Console.WriteLine("");
     Console.ForegroundColor = ConsoleColor.Cyan;
     Console.BackgroundColor = ConsoleColor.Black;
   }
@@ -201,26 +212,33 @@ class Program
     // Copy game state by creating another array referencing the same values in the original array so that the original game state is not changed by this method during gameplay
     int[] gameStateCopy = [.. gameState];
 
-    Console.WriteLine(" ");
-    Console.WriteLine("Ange hög och antal i följande format: \n<hög> <antal> \n");
+    Console.WriteLine("Ange hög och antal i följande format:\n\n<hög> <antal>\n");
 
     for (int i = 0; i < 20; i++)
     {
       string response;
+      Console.ForegroundColor = ConsoleColor.DarkGray;
       if (responseOverride != null) response = responseOverride;
       else response = Console.ReadLine() ?? "";
+      Console.WriteLine("");
+      Console.ForegroundColor = ConsoleColor.Cyan;
+
 
       if (response.Trim() == "")
       {
-        Console.WriteLine("Försök igen!");
-        Thread.Sleep(500);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Försök igen!\n");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Thread.Sleep(1000);
         continue;
       }
       string[] splitResponse = response.Trim().Split(' ');
       if (splitResponse.Length < 2)
       {
-        Console.WriteLine("Du angav inte två siffror \nFörsök igen!");
-        Thread.Sleep(500);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Du angav inte två siffror\n\nFörsök igen!\n");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Thread.Sleep(1000);
         continue;
       }
       string pileResponse = splitResponse[0];
@@ -228,39 +246,51 @@ class Program
 
       if (!int.TryParse(pileResponse, out int pile) || !int.TryParse(countResponse, out int count))
       {
-        Console.WriteLine("Du angav inte två siffror \nFörsök igen!");
-        Thread.Sleep(500);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Du angav inte två siffror\n\nFörsök igen!\n");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Thread.Sleep(1000);
         continue;
       }
       if (splitResponse.Length > 2)
       {
-        Console.WriteLine("Du har inte följt instruktionerna, jag kommer ignorera allt förutom de två första siffrorna.");
-        Thread.Sleep(500);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Du har inte följt instruktionerna, jag kommer ignorera allt förutom de två första siffrorna.\n");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Thread.Sleep(1000);
       }
       int pileIndex = pile - 1;
       if (pileIndex < 0 || pileIndex > gameStateCopy.Length - 1)
       {
-        Console.WriteLine("Du angav en ogiltig hög \nFörsök igen!");
-        Thread.Sleep(500);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Du angav en ogiltig hög\n\nFörsök igen! \n");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Thread.Sleep(1000);
         continue;
       }
       if (gameStateCopy[pileIndex] <= 0)
       {
-        Console.WriteLine("Denna hög är töm \nFörsök igen!");
-        Thread.Sleep(500);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Denna hög är töm\n\nFörsök igen! \n");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Thread.Sleep(1000);
         continue;
       }
       if (count < 1)
       {
-        Console.WriteLine("Du måste plocka minst en sticka >:(");
-        Thread.Sleep(500);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Du måste plocka minst en sticka >:( \n");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Thread.Sleep(1000);
         continue;
       }
 
       if (gameStateCopy[pileIndex] < count)
       {
-        Console.WriteLine("Du tog för många stickor, vi löser det.");
-        Thread.Sleep(500);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Du tog för många stickor, vi löser det. \n");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Thread.Sleep(1000);
       }
       int newPileCount = gameStateCopy[pileIndex] - count;
       if (newPileCount < 0)
@@ -271,11 +301,18 @@ class Program
       return gameStateCopy;
 
     }
+    Console.ForegroundColor = ConsoleColor.Red;
     Console.WriteLine("Vad håller du på med?");
+    Console.ForegroundColor = ConsoleColor.Cyan;
     Environment.Exit(0);
     return []; // Should never happen, makes code happy
   }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="gameState"></param>
+  /// <returns></returns>
   public static bool IsGameOver(int[] gameState)
   {
     int sumOfSticks = 0;
@@ -300,11 +337,17 @@ class Program
     return true;
   }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="leaderboardKeys"></param>
+  /// <param name="leaderboardValues"></param>
   public static void DrawScoreboard(string[] leaderboardKeys, int[] leaderboardValues)
   {
     (string[] sortedLeaderboardKeys, int[] sortedLeaderboardValues) = SortLeaderboard(leaderboardKeys, leaderboardValues);
 
     Console.WriteLine("");
+    Console.ForegroundColor = ConsoleColor.Blue;
     Console.WriteLine(" ________________________ ");
     Console.WriteLine("|    Vinststatistik      |");
     Console.WriteLine("| plats | namn | vinster |");
@@ -317,7 +360,15 @@ class Program
       Console.WriteLine($"| {i + 1,-5} | {sortedLeaderboardKeys[i],4} | {sortedLeaderboardValues[i],7} |");
     }
     Console.WriteLine("|_______|______|_________|\n");
+    Console.ForegroundColor = ConsoleColor.Cyan;
   }
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="leaderboardKeys"></param>
+  /// <param name="leaderboardValues"></param>
+  /// <param name="playerName"></param>
+  /// <param name="score"></param>
   public static void SetPlayerScore(string[] leaderboardKeys, int[] leaderboardValues, string playerName, int score = 0)
   {
     // Try to find existing player by name
@@ -362,6 +413,12 @@ class Program
 
   }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="leaderboardKeys"></param>
+  /// <param name="leaderboardValues"></param>
+  /// <returns></returns>
   public static (string[], int[]) SortLeaderboard(string[] leaderboardKeys, int[] leaderboardValues)
   {
     int leaderboardLength = leaderboardKeys.Length;
@@ -398,6 +455,12 @@ class Program
 
     return (sortedKeys, sortedValues);
   }
+
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="gameState"></param>
+  /// <returns></returns>
   public static string AIPlayer(int[] gameState)
   {
     Random random = new();
@@ -412,7 +475,9 @@ class Program
       int pick = random.Next(1, pileCount);
       return $"{pileIndex + 1} {pick}";
     }
+    Console.ForegroundColor = ConsoleColor.Red;
     Console.WriteLine("AI gick sönder :O \nAvslutar programmet...");
+    Console.ForegroundColor = ConsoleColor.Cyan;
     Environment.Exit(0);
     return "";
   }
